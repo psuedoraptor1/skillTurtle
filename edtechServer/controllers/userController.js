@@ -9,6 +9,8 @@ import cloudinary from "cloudinary"
 import getDataUri from "../utils/dataUri.js"
 import { sendEmail } from "../utils/sendEmail.js";
 import { Stats } from "../models/Stats.js";
+import { defaultQuestions } from "../models/defaultQuestions.js";
+import { DSAQuestion } from "../models/dsaQuestionModel.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
 
@@ -48,17 +50,31 @@ user = await User.create({
 
   console.log("user created");
 
+
+  await Promise.all(
+    defaultQuestions.map(q =>
+      DSAQuestion.create({
+        userId: user._id,
+        questionText: q.questionText,
+        link: q.link,
+        isCompleted: false
+      })
+    )
+  );
+
   sendToken(res, user, "Registered Successfully", 201);
 
 
 })
 
 
+
+
 export const login=catchAsyncError(async(req,res,next)=>{
   const {  email, password } = req.body;
   // const file = req.file;
   if ( !email || !password )
-  return next(new ErrorHandler("Please enter all field", 400));
+  return next(new ErrorHandler("Please enter all fields", 400));
   
 
 const user=await User.findOne({email}).select("+password");
@@ -68,6 +84,7 @@ if (!user) return next(new ErrorHandler("Incorrect Email or Passsword", 401));
 const isMatch = await user.comparePassword(password);
 
 if (!isMatch) return next(new ErrorHandler("Incorrect Email or Passsword",401));
+
 
 sendToken(res, user, `Welcome Back, ${user.name}`, 200);
 })
@@ -341,3 +358,36 @@ User.watch().on("change",async()=>{
 
 await stats[0].save();
 });
+
+
+//update controller -PD
+export const updateDSAQuestionStatus = catchAsyncError(async (req, res, next) => {
+  const { questionId } = req.params;
+  const { completed } = req.body;
+
+  if (typeof completed !== "boolean") {
+    return next(new ErrorHandler("isCompleted must be true or false", 400));
+  }
+
+  const question = await DSAQuestion.findOne({
+    _id: questionId,
+    userId: req.user._id,
+  });
+
+  if (!question) {
+    return next(new ErrorHandler("Question not found", 404));
+  }
+
+  question.completed = completed;
+  await question.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Question status updated",
+    question,
+  });
+});
+
+
+
+

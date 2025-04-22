@@ -95,3 +95,4 @@ this.resetPasswordExpire=Date.now()+15* 60 * 1000;
 }
 
 export const User=mongoose.model("User",schema)
+
