@@ -36,6 +36,13 @@ const dsaQuestionSchema = new mongoose.Schema({
     level2: { type: Boolean, default: false },
     level3: { type: Boolean, default: false },
   }
+  ,
+  category: {
+    type: String,
+    required: true,
+  }
+ 
+  
 });
 
 // module.exports = mongoose.model("DSAQuestion", dsaQuestionSchema);

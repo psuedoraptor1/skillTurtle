@@ -53,7 +53,7 @@ router
   .put(isAuthenticated, authorizeAdmin,updateUserRole)
   .delete(isAuthenticated,authorizeAdmin,deleteUser);
 //dsa question route
-router.get("/dsa-questions", isAuthenticated, getDSATopicsForUser);
+router.get('/dsa-questions/:category', isAuthenticated, getDSATopicsForUser);
 router.put("/:topicId/update", isAuthenticated, updateDSATopicStatus);
 
 
