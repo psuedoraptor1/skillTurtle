@@ -140,8 +140,7 @@ export const updateProfile = (name, email) => async dispatch => {
     }
   };
 
-
-  export const addToPlaylist = id => async dispatch => {
+  export const addToPlaylist = (id, level, status) => async dispatch => {
     try {
       dispatch({ type: 'addToPlaylistRequest' });
   
@@ -153,10 +152,12 @@ export const updateProfile = (name, email) => async dispatch => {
         withCredentials: true,
       };
   
-      const { data } = await axios.post(
-        `${server}/addtoplaylist`,
+      const { data } = await axios.put(
+        `${server}/topic/update`,
         {
-          id,
+          topicId: id,
+          status: status,
+          level: level
         },
         config
       );

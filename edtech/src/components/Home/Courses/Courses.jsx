@@ -1,90 +1,99 @@
-import { Button, Container, Heading, HStack, Image, Input, Stack, Text,  VStack } from '@chakra-ui/react'
+import { Button, Checkbox, Container, Heading, HStack, VStack, Stack, Text, Box, useColorModeValue } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { getAllCourses } from '../../../redux/actions/course'
 import {toast} from 'react-hot-toast'
 import {addToPlaylist} from "../../../redux/actions/profile"
-import {loadUser} from '../../../redux/actions/user'
+import Loader from '../../Home/Layout/Loader/Loader'
 
 const Course=({
-  views,title,imageSrc,id,addToPlaylistHandler,creator,description,lectureCount,loading
+  title, id, status, levelUpdateHandler, loading
 })=>{
+    const [levels, setLevels] = useState({
+      level1: status.level1,
+      level2: status.level2,
+      level3: status.level3,
+    });
+  
+    const handleChange = (level) => (e) => {
+      setLevels({ ...levels, [level]: e.target.checked });
+      levelUpdateHandler(id, level, e.target.checked);
+    };
+  
+    const bg = useColorModeValue('white', 'gray.800');
+    const border = useColorModeValue('gray.200', 'gray.700');
+
   return(
-<VStack className='course' alignItems={["center","flex-start"]}>
-<Image src={imageSrc} boxSize="60" objectFit={"contain"}/>
-<Heading 
-textAlign={['center','left']}
-maxW="200px"
-size={'sm'}
-fontFamily={'sans-serif'}
-noOfLines={3}
-children={title}
-/>
-<Text noOfLines={2} children={description} />
-
-<HStack>
-        <Text
-          fontWeight={'bold'}
-          textTransform="uppercase"
-          children={'Creator'}
-        />
-
-        <Text
-          fontFamily={'body'}
-          textTransform="uppercase"
-          children={creator}
-        />
-      </HStack>
-      <Heading 
-      textAlign={'center'}
-      size='xs'
-      children={`Lectures - ${lectureCount}`}
-      textTransform={'uppercase'}
-      />
-
-<Heading 
-      // textAlign={'center'}
-      size='xs'
-      children={`Views - ${views}`}
-      textTransform={'uppercase'}
-      />
-
-<Stack direction={["column","row"]} alignItems="center">
-<Link to={`/course/${id}`}>
-<Button isLoading={loading} colorScheme={"yellow"}>
-  Watch Now
-</Button>
-
-</Link>
-<Button  variant={"ghost"} colorScheme={"yellow"} onClick={()=>addToPlaylistHandler(id)}>
-  Add to Playlist
-</Button>
-
-
-</Stack>
-</VStack>
-  )
+    <>
+    {
+      loading ? (
+        <Loader />) : (
+          <VStack className='course' alignItems={["center","flex-start"]}>
+          {/* <Text noOfLines={2} children={description} /> */}
+          <Stack direction={["column","row"]} alignItems="center">
+          <Box
+                  maxW="sm"
+                  mx="auto"
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="lg"
+                  bg={bg}
+                  border="1px solid"
+                  borderColor={border}
+                >
+                  <Text fontSize="xl" mb={4} fontWeight="bold" textAlign="center">
+                    {title}
+                  </Text>
+            
+                  <VStack align="start" spacing={4}>
+                    <Checkbox
+                      isChecked={levels.level1}
+                      onChange={handleChange('level1')}
+                      colorScheme="teal"
+                      size="lg"
+                    >
+                      Level 1
+                    </Checkbox>
+            
+                    <Checkbox
+                      isChecked={levels.level2}
+                      onChange={handleChange('level2')}
+                      colorScheme="teal"
+                      size="lg"
+                    >
+                      Level 2
+                    </Checkbox>
+            
+                    <Checkbox
+                      isChecked={levels.level3}
+                      onChange={handleChange('level3')}
+                      colorScheme="teal"
+                      size="lg"
+                    >
+                      Level 3
+                    </Checkbox>
+                  </VStack>
+                </Box>
+          </Stack>
+          </VStack>
+          )
+        }
+      </>
+    );
 }
 
 const Courses = () => {
-    const [keyword,setKeyword]=useState("")
-   const [category, setCategory]=useState('');
-   const dispatch=useDispatch()
-    
-   const addToPlaylistHandler=async courseId=>{
-      console.log('Added to Playlist',courseId);
-      await dispatch(addToPlaylist(courseId))
-      dispatch(loadUser());
-      
-    };
-     
-    const categories=["Web Development","Artificial Intelligence","Data Structures & Alogrithms","App Development","Data Science", "Game Development","Others"]
-    
-    const {loading,courses,error,message}=useSelector(state=>state.course)
+   const [category, setCategory]=useState("Data Structures And Algorithms");
+   const dispatch=useDispatch();
 
+   const levelUpdateHandler=async (courseId, level, status)=>{
+      await dispatch(addToPlaylist(courseId, level, status));
+    };
+
+    const categories=["Data Structures And Algorithms", "Web Development", "Core Subjects", "System Sesign", "Off-campus", "Others"]
+    const {courses,loading,error,message}=useSelector(state=>state.course)
     useEffect(() => {
-      dispatch(getAllCourses(category, keyword));
+      dispatch(getAllCourses(encodeURIComponent(category)));
   
       if (error) {
         toast.error(error);
@@ -95,17 +104,12 @@ const Courses = () => {
         toast.success(message);
         dispatch({ type: 'clearMessage' });
       }
-    }, [category, keyword, dispatch,error,message ]);
+    }, [category,dispatch,error,message ]);
   
 
 
   return (<Container minH={"95vh"} maxW="container.lg" paddingY={'8'}>
 <Heading children="All Courses" m={'8'} />
- <Input value={keyword} onChange={e=> setKeyword(e.target.value)}
- placeholder="Search a course..."
- type={'text'}
- focusBorderColor="yellow.500"
- />
  <HStack overflowX={"auto"} paddingY="8" css={{"&::-webkit-scrollbar":{display:"none"}}}>
   {
     categories.map((item,index)=>(
@@ -120,25 +124,20 @@ const Courses = () => {
  flexWrap="wrap"
  justifyContent={["flex-start","space-evenly"]}
  alignItems={['center','flex-start']}
-
  >
      {courses.length > 0 ? (
           courses.map(item => (
             <Course
               key={item._id}
-              title={item.title}
-              description={item.description}
-              views={item.views}
-              imageSrc={item.poster.url}
+              title={item.topic}
+              status={item.levels}
               id={item._id}
-              creator={item.createdBy}
-              lectureCount={item.numOfVideos}
-              addToPlaylistHandler={addToPlaylistHandler}
+              levelUpdateHandler={levelUpdateHandler}
               loading={loading}
             />
           ))
         ) : (
-          <Heading opacity={'.5'} mt="4" children="No Course Exists in this Category"   />
+          <Heading opacity={'.5'} mt="4" children="No Course Exists in this Category" />
           
         )}
  </Stack>

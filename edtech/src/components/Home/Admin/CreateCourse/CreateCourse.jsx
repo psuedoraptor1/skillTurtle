@@ -21,7 +21,7 @@ const CreateCourse = () => {
  const { loading, error, message } = useSelector(state => state.admin);
 
 
- const categories=["Web Development","Artificial Intelligence","Data Structures & Alogrithms","App Development","Data Science", "Game Development","Others"]
+ const categories=["Data Structures And Algorithms", "Web Development", "Core Subjects", "System Sesign", "Off-campus", "Others"]
  
  const changeImageHandler = e => {
   const file = e.target.files[0];

@@ -2,16 +2,15 @@ import {server} from '../Store';
 import axios from 'axios';
 
 export const getAllCourses =
-  (category = '', keyword = '') =>
+  (category = '') =>
   async dispatch => {
     try {
       dispatch({ type: 'allCoursesRequest' });
 
       const { data } = await axios.get(
-        `${server}/courses?keyword=${keyword}&category=${category}`
+        `${server}/dsa-questions/${category}`
       );
-        // console.log(data)
-      dispatch({ type: 'allCoursesSuccess', payload: data.courses });
+      dispatch({ type: 'allCoursesSuccess', payload: data.topics });
     } catch (error) {
       dispatch({
         type: 'allCoursesFail',

@@ -15,7 +15,7 @@ cloudinary.v2.config({
 });
 
 export const instance = new RazorPay({
-  key_id: process.env.RAZORPAY_API_KEY,
+  key_id: "hello",
   key_secret: process.env.RAZORPAY_API_SECRET,
 });
 

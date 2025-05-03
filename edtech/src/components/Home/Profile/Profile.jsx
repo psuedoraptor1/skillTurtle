@@ -1,34 +1,19 @@
-import { Avatar, Button, Container, Heading, HStack, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, VStack, Box } from '@chakra-ui/react'
+import { Avatar, Button, Container, Heading, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, VStack} from '@chakra-ui/react'
 
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
-
-import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { removeFromPlaylist, updateProfilePicture } from '../../../redux/actions/profile'
-import { cancelSubscription, loadUser } from '../../../redux/actions/user'
+import { updateProfilePicture } from '../../../redux/actions/profile'
+import { loadUser } from '../../../redux/actions/user'
 import { fileUploadCss } from '../Auth/Register'
 
 const Profile = ({user}) => {
 
-
-
 const dispatch = useDispatch();
 
 const {loading,message,error} =useSelector(state=>state.profile);
-const {
-  loading:subscriptionLoading,
-  message:subscriptionMessage,
-  error:subscriptionError} =useSelector(state=>state.subscription);
-
-const removeFromPlaylistHandler=async id=>
-{
-console.log(id);
-await dispatch(removeFromPlaylist(id))
-dispatch(loadUser())
-};
 
 const changeImageSubmitHandler = async (e, image) => {
   e.preventDefault();
@@ -36,10 +21,6 @@ const changeImageSubmitHandler = async (e, image) => {
   myForm.append('file', image);
   await dispatch(updateProfilePicture(myForm));
   dispatch(loadUser());
-};
-
-const cancelSubscriptionHandler= ()=> {
-  dispatch(cancelSubscription())
 };
 
 useEffect(() => {
@@ -51,20 +32,7 @@ useEffect(() => {
     toast.success(message);
     dispatch({ type: 'clearMessage' });
   }
-
-  if (subscriptionMessage) {
-    toast.success(message);
-    dispatch({ type: 'clearMessage' });
-     dispatch(loadUser());
-  }
-if(subscriptionError){
-  toast.success(message);
-  dispatch({ type: 'clearMessage' });
- 
-  
-}
-
-}, [dispatch, error, message,subscriptionError,subscriptionMessage]);
+}, [dispatch, error, message]);
 
 
 
@@ -109,20 +77,6 @@ const {isOpen,onClose,onOpen}=useDisclosure();
 
   <Text children={user.createdAt.split("T")[0]} />
 </HStack>
-{user.role !== 'admin' && (
-            <HStack>
-              <Text children="Subscription" fontWeight={'bold'} />
-              { user.subscription && user.subscription.status === 'active' ? (
-                <Button isLoading={subscriptionLoading} onClick={cancelSubscriptionHandler} color={'yellow.500'} variant={'outline'}>
-                  Cancel Subscription
-                </Button>
-              ) : (
-                <Link to="/subscribe">
-                  <Button colorScheme={'yellow'}>Subscribe</Button>
-                </Link>
-              )}
-            </HStack>
-          )}
 
 <Stack direction={['column', 'row']}
       alignItems={'center'}>
@@ -177,46 +131,6 @@ const {isOpen,onClose,onOpen}=useDisclosure();
  ))}
     </Stack>
   )} */}
-
-
-
-  
-  <Heading children="Playlist" size={'md'} my={'8'} />
-
-{
-  user.playlist.length > 0 ? (
-    <Stack direction={['column','row']} alignItems={'center'} flexWrap="wrap" padding={'4'}>
-      {user.playlist.map((element) => (
-        <VStack w="48" m={'2'} key={element.course}>
-          <Image
-            boxSize={'full'}
-            objectFit="contain"
-            src={element.poster}
-          />
-          <HStack>
-            <Link to={`/course/${element.course}`}>
-              <Button variant={'ghost'} colorScheme={'yellow'}>
-                Watch Now
-              </Button>
-            </Link>
-            <Button
-              isLoading={loading}
-              onClick={() => removeFromPlaylistHandler(element.course)}
-            >
-              <RiDeleteBin7Fill />
-            </Button>
-          </HStack>
-        </VStack>
-      ))}
-    </Stack>
-  ) : (
-    <Box padding={4}>
-      <Text fontWeight="bold" fontSize="lg" textAlign="center">
-        No videos are added to the playlist 
-      </Text>
-    </Box>
-  )
-}
 
 <ChangePhotoBox 
 changeImageSubmitHandler={changeImageSubmitHandler}

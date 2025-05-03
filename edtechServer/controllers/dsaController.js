@@ -8,7 +8,7 @@ export const getDSATopicsForUser = catchAsyncError(async (req, res, next) => {
   const { category } = req.params;
 
   const allowedCategories = [
-    "Data Structures & Alogrithms",
+    "Data Structures And Algorithms",
     "Web Development",
     "Core Subjects",
     "System Sesign",

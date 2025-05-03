@@ -60,7 +60,7 @@ user = await User.create({
       DSAQuestion.create({
         userId: user._id,
         topic,
-        category: "Data Structures & Algorithms",
+        category: "Data Structures And Algorithms",
         levels: {
           level1: false,
           level2: false,
@@ -427,18 +427,12 @@ await stats[0].save();
 
 //update controller -PD
 export const updateDSATopicStatus = catchAsyncError(async (req, res, next) => {
-  const { topicId } = req.params;
-  const { level, status } = req.body;
-
+  const { level, status, topicId } = req.body;
   const allowedLevels = ["level1", "level2", "level3"];
-  const allowedCategories = [
-    "Data Structures & Alogrithms",
-    "Web Development",
-    "Core Subjects",
-    "System Sesign",
-    "Off-campus",
-    "Others"
-  ];
+
+  if (!topicId) {
+    return next(new ErrorHandler("Topic not found", 404));
+  }
 
   if (!allowedLevels.includes(level)) {
     return next(new ErrorHandler("Invalid level. Choose from 'level1', 'level2', 'level3'.", 400));
@@ -446,10 +440,6 @@ export const updateDSATopicStatus = catchAsyncError(async (req, res, next) => {
 
   if (typeof status !== "boolean") {
     return next(new ErrorHandler("Status must be true or false", 400));
-  }
-
-  if (category && !allowedCategories.includes(category)) {
-    return next(new ErrorHandler("Invalid category", 400));
   }
 
   const topic = await DSAQuestion.findOne({
@@ -472,15 +462,11 @@ export const updateDSATopicStatus = catchAsyncError(async (req, res, next) => {
     topic.levels.level1 = true;
   }
 
-  if (category) {
-    topic.category = category;
-  }
-
   await topic.save();
 
   res.status(200).json({
     success: true,
-    message: `Topic ${level} status${category ? " and category" : ""} updated`,
+    message: `Topic ${level} status updated`,
     topic,
   });
 });
