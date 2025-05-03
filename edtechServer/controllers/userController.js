@@ -9,7 +9,7 @@ import cloudinary from "cloudinary"
 import getDataUri from "../utils/dataUri.js"
 import { sendEmail } from "../utils/sendEmail.js";
 import { Stats } from "../models/Stats.js";
-import { defaultQuestions } from "../models/defaultQuestions.js";
+import { dsaTopics } from "../models/defaultQuestions.js";
 import { DSAQuestion } from "../models/dsaQuestionModel.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
@@ -52,15 +52,18 @@ user = await User.create({
 
 
   await Promise.all(
-    defaultQuestions.map(q =>
+    dsaTopics.map(topic =>
       DSAQuestion.create({
         userId: user._id,
-        questionText: q.questionText,
-        link: q.link,
-        isCompleted: false
+        topic,
+        levels: {
+          level1: false,
+          level2: false,
+          level3: false
+        }
       })
     )
-  );
+  );;
 
   sendToken(res, user, "Registered Successfully", 201);
 
@@ -361,32 +364,42 @@ await stats[0].save();
 
 
 //update controller -PD
-export const updateDSAQuestionStatus = catchAsyncError(async (req, res, next) => {
-  const { questionId } = req.params;
-  const { completed } = req.body;
+export const updateDSATopicStatus = catchAsyncError(async (req, res, next) => {
+  const { topicId } = req.params;
+  const { level, status } = req.body; // Expecting { level: "level1", status: true/false }
 
-  if (typeof completed !== "boolean") {
-    return next(new ErrorHandler("isCompleted must be true or false", 400));
+  // Ensure valid level input
+  if (!["level1", "level2", "level3"].includes(level)) {
+    return next(new ErrorHandler("Invalid level. Choose from 'level1', 'level2', 'level3'.", 400));
   }
 
-  const question = await DSAQuestion.findOne({
-    _id: questionId,
+  // Ensure status is a boolean
+  if (typeof status !== "boolean") {
+    return next(new ErrorHandler("Status must be true or false", 400));
+  }
+
+  // Find the topic for the specific user
+  const topic = await DSAQuestion.findOne({
+    _id: topicId,
     userId: req.user._id,
   });
 
-  if (!question) {
-    return next(new ErrorHandler("Question not found", 404));
+  if (!topic) {
+    return next(new ErrorHandler("Topic not found", 404));
   }
 
-  question.completed = completed;
-  await question.save();
+  // Update the specific level's status
+  topic.levels[level] = status;
+
+  await topic.save();
 
   res.status(200).json({
     success: true,
-    message: "Question status updated",
-    question,
+    message: `Topic ${level} status updated`,
+    topic,
   });
 });
+
 
 
 

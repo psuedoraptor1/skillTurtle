@@ -5,8 +5,8 @@ import {register} from '../controllers/userController.js'
 import { authorizeAdmin, isAuthenticated } from "../middlewares/auth.js";
 import singleUpload from "../middlewares/multer.js"
 // import express from "express";
-import { getDSAQuestionsForUser } from "../controllers/dsaController.js";
-import { updateDSAQuestionStatus } from "../controllers/userController.js";
+import { getDSATopicsForUser } from "../controllers/dsaController.js";
+import { updateDSATopicStatus } from "../controllers/userController.js";
 
 // import { isAuthenticated } from "../middlewares/auth.js";
 
@@ -53,8 +53,8 @@ router
   .put(isAuthenticated, authorizeAdmin,updateUserRole)
   .delete(isAuthenticated,authorizeAdmin,deleteUser);
 //dsa question route
-router.get("/dsa-questions", isAuthenticated, getDSAQuestionsForUser);
-router.put("/:questionId/update", isAuthenticated, updateDSAQuestionStatus);
+router.get("/dsa-questions", isAuthenticated, getDSATopicsForUser);
+router.put("/:topicId/update", isAuthenticated, updateDSATopicStatus);
 
 
 
