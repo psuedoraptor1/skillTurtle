@@ -15,7 +15,7 @@ const store= configureStore({
 });
 export default store;
 
-
-export const server='http://localhost:5000/api/v1'
-// brightbtyes
-// export const server='https://brightbtyes.herokuapp.com/api/v1';
+//Localhost
+// export const server='http://localhost:5000/api/v1'
+//SkillTurtle
+export const server='https://skillturtle.onrender.com/api/v1';
