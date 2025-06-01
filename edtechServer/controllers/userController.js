@@ -9,6 +9,12 @@ import cloudinary from "cloudinary"
 import getDataUri from "../utils/dataUri.js"
 import { sendEmail } from "../utils/sendEmail.js";
 import { Stats } from "../models/Stats.js";
+import { dsaTopics } from "../models/defaultQuestions.js";
+import { fundamentals } from "../models/defaultQuestions.js";
+import { webd } from "../models/defaultQuestions.js";
+import { sysd } from "../models/defaultQuestions.js";
+import { offcampus } from "../models/defaultQuestions.js";
+import { DSAQuestion } from "../models/dsaQuestionModel.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
 
@@ -48,17 +54,92 @@ user = await User.create({
 
   console.log("user created");
 
+
+  await Promise.all(
+    dsaTopics.map(topic =>
+      DSAQuestion.create({
+        userId: user._id,
+        topic,
+        category: "Data Structures And Algorithms",
+        levels: {
+          level1: false,
+          level2: false,
+          level3: false
+        }
+      })
+    )
+  );
+  
+  await Promise.all(
+    fundamentals.map(topic =>
+      DSAQuestion.create({
+        userId: user._id,
+        topic,
+        category: "Core Subjects",
+        levels: {
+          level1: false,
+          level2: false,
+          level3: false
+        }
+      })
+    )
+  );
+  await Promise.all(
+    webd.map(topic =>
+      DSAQuestion.create({
+        userId: user._id,
+        topic,
+        category: "Web Development",
+        levels: {
+          level1: false,
+          level2: false,
+          level3: false
+        }
+      })
+    )
+  );
+  await Promise.all(
+    sysd.map(topic =>
+      DSAQuestion.create({
+        userId: user._id,
+        topic,
+        category: "System Design",
+        levels: {
+          level1: false,
+          level2: false,
+          level3: false
+        }
+      })
+    )
+  );
+  await Promise.all(
+    offcampus.map(topic =>
+      DSAQuestion.create({
+        userId: user._id,
+        topic,
+        category: "Off-campus",
+        levels: {
+          level1: false,
+          level2: false,
+          level3: false
+        }
+      })
+    )
+  );
+
   sendToken(res, user, "Registered Successfully", 201);
 
 
 })
 
 
+
+
 export const login=catchAsyncError(async(req,res,next)=>{
   const {  email, password } = req.body;
   // const file = req.file;
   if ( !email || !password )
-  return next(new ErrorHandler("Please enter all field", 400));
+  return next(new ErrorHandler("Please enter all fields", 400));
   
 
 const user=await User.findOne({email}).select("+password");
@@ -68,6 +149,7 @@ if (!user) return next(new ErrorHandler("Incorrect Email or Passsword", 401));
 const isMatch = await user.comparePassword(password);
 
 if (!isMatch) return next(new ErrorHandler("Incorrect Email or Passsword",401));
+
 
 sendToken(res, user, `Welcome Back, ${user.name}`, 200);
 })
@@ -341,3 +423,56 @@ User.watch().on("change",async()=>{
 
 await stats[0].save();
 });
+
+
+//update controller -PD
+export const updateDSATopicStatus = catchAsyncError(async (req, res, next) => {
+  const { level, status, topicId } = req.body;
+  const allowedLevels = ["level1", "level2", "level3"];
+
+  if (!topicId) {
+    return next(new ErrorHandler("Topic not found", 404));
+  }
+
+  if (!allowedLevels.includes(level)) {
+    return next(new ErrorHandler("Invalid level. Choose from 'level1', 'level2', 'level3'.", 400));
+  }
+
+  if (typeof status !== "boolean") {
+    return next(new ErrorHandler("Status must be true or false", 400));
+  }
+
+  const topic = await DSAQuestion.findOne({
+    _id: topicId,
+    userId: req.user._id,
+  });
+
+  if (!topic) {
+    return next(new ErrorHandler("Topic not found", 404));
+  }
+
+  // Update the requested level
+  topic.levels[level] = status;
+
+  // Cascading logic
+  if (level === "level3" && status === true) {
+    topic.levels.level2 = true;
+    topic.levels.level1 = true;
+  } else if (level === "level2" && status === true) {
+    topic.levels.level1 = true;
+  }
+
+  await topic.save();
+
+  res.status(200).json({
+    success: true,
+    message: `Topic ${level} status updated`,
+    topic,
+  });
+});
+
+
+
+
+
+

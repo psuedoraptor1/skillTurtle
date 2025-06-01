@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const connectDB = async()=>
 {
-   const process = require('process');
+   // const process = require('process');
 
     console.log(process.env.MONGO_URI);
    const {connection}= await mongoose.connect(process.env.MONGO_URI);

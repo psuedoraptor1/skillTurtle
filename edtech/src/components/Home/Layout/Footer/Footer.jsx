@@ -2,7 +2,7 @@ import { Box, Heading, HStack, Stack, VStack } from '@chakra-ui/react'
 import React from 'react'
 
 import {TiSocialLinkedinCircular,TiSocialInstagramCircular} from "react-icons/ti"
-import {DiGithub} from "react-icons/di"
+import { FaWhatsapp } from 'react-icons/fa'
 
 const Footer = () => {
   return <Box padding={"4"} bg="blackAlpha.900" minH={'10vh'} mt={'8'}>
@@ -13,21 +13,21 @@ const Footer = () => {
 <Heading
 fontFamily={'body'}
 size="sm"
-children="@Prakhar Kumar Singh" color={'yellow.400'}/>
+children="@Skill Turle" color={'yellow.400'}/>
 
     </VStack>
 
     <HStack spacing={["2","10"]} justifyContent="center" 
     color={'white'}
     fontSize={'50'}>
-<a href="https://www.linkedin.com/in/prakhar-kumar-singh/" target={'_blank'} rel="noreferrer" >
+<a href="https://www.linkedin.com/company/skillturtle/" target={'_blank'} rel="noreferrer" >
 <TiSocialLinkedinCircular />
 </a>
-<a href="https://www.instagram.com/prakhar0007/" target={'_blank'} rel="noreferrer">
+<a href="https://www.instagram.com/skill.turtle/" target={'_blank'} rel="noreferrer">
 <TiSocialInstagramCircular />
 </a>
-<a href="https://github.com/prakhar00007" target={'_blank'} rel="noreferrer">
-<DiGithub />
+<a href="https://chat.whatsapp.com/GxZiWUSUksW8fyzyCi6MYk" target={'_blank'} rel="noreferrer">
+<FaWhatsapp />
 </a>
     </HStack>
 </Stack>

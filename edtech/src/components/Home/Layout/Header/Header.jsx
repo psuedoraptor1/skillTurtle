@@ -1,9 +1,10 @@
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import {Flex,  Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { ColorModeSwitcher } from '../../../../ColorModeSwitcher';
 import {RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill} from "react-icons/ri"
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { GiTurtle } from "react-icons/gi";
 import { logout } from '../../../../redux/actions/user';
 
 const LinkButton=({url='/',title="Home",onClose})=>
@@ -13,7 +14,7 @@ const LinkButton=({url='/',title="Home",onClose})=>
     );
 
 
-const Header = ({isAuthenticated=false,user}) => {
+const Header = ({isAuthenticated=false, user}) => {
     const {isOpen,onOpen,onClose} = useDisclosure();
 
 // const isAuthenticated=false;
@@ -37,16 +38,17 @@ const logoutHandler= ()=>{
 <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
 <DrawerOverlay backdropFilter={"blur(.5px)"}/>
 <DrawerContent>
- <DrawerHeader borderBottomWidth={"1px"}>
- BRIGHT BYTES
-    </DrawerHeader>  
+<DrawerHeader borderBottomWidth="1px">
+  <Flex align="center" gap={2}>
+    Skill Turtle <GiTurtle />
+  </Flex>
+</DrawerHeader>
 
 <DrawerBody>
 <VStack spacing={"3"} alignItems="flex-start">
    <LinkButton onClose={onClose} url="/" title="Home"  />
-   <LinkButton onClose={onClose} url="/courses" title="Browse All Courses"  />
 
-   <LinkButton onClose={onClose} url="/request" title="Request a Course"  />
+   { user  && <LinkButton onClose={onClose} url="/courses" title="Browse All Courses"  /> }
 
    <LinkButton onClose={onClose} url="/contact" title="Contact Us"  />
 
@@ -90,15 +92,6 @@ position="absolute" bottom={"2rem"} width="80%">
     Login
 </Button>
 </Link>
-
-<p>OR</p>
-
-<Link onClick={onClose} to="/register">
-<Button colorScheme={"yellow"}>
-    Sign Up
-</Button>
-</Link>
-
 </>)}
 
 

@@ -5,6 +5,7 @@ import RazorPay from "razorpay";
 import nodeCron from "node-cron";
 import { Stats } from "./models/Stats.js";
 
+
 connectDB();
 
 cloudinary.v2.config({
@@ -14,7 +15,7 @@ cloudinary.v2.config({
 });
 
 export const instance = new RazorPay({
-  key_id: process.env.RAZORPAY_API_KEY,
+  key_id: "hello",
   key_secret: process.env.RAZORPAY_API_SECRET,
 });
 
@@ -40,3 +41,5 @@ const port= process.env.PORT || 5000;
 app.listen(process.env.PORT, () => {
   console.log(`Server is working on port ${port}`);
 });
+
+

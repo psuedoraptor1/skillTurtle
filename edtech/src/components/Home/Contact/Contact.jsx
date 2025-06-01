@@ -10,7 +10,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { contactUs } from '../../../redux/actions/other';
 import { useEffect } from 'react';
@@ -98,16 +97,6 @@ const Contact = () => {
           >
             Send Mail
           </Button>
-
-          <Box my="4">
-            Request for a course?{' '}
-            <Link to="/request">
-              <Button colorScheme={'yellow'} variant="link">
-                Click
-              </Button>{' '}
-              here
-            </Link>
-          </Box>
         </form>
       </VStack>
     </Container>

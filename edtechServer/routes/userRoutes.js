@@ -4,6 +4,12 @@ import { addToPlaylist, changePassword, deleteMyProfile, deleteUser, forgetPassw
 import {register} from '../controllers/userController.js'
 import { authorizeAdmin, isAuthenticated } from "../middlewares/auth.js";
 import singleUpload from "../middlewares/multer.js"
+// import express from "express";
+import { getDSATopicsForUser } from "../controllers/dsaController.js";
+import { updateDSATopicStatus } from "../controllers/userController.js";
+
+// import { isAuthenticated } from "../middlewares/auth.js";
+
 
 
 const router= express.Router();
@@ -46,6 +52,10 @@ router
   .route("/admin/user/:id")
   .put(isAuthenticated, authorizeAdmin,updateUserRole)
   .delete(isAuthenticated,authorizeAdmin,deleteUser);
+//dsa question route
+router.get('/dsa-questions/:category', isAuthenticated, getDSATopicsForUser);
+router.put("/topic/update", isAuthenticated, updateDSATopicStatus);
+
 
 
 export default router;

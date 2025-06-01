@@ -9,8 +9,8 @@ export const contact = catchAsyncError(async (req, res, next) => {
   if (!name || !email || !message)
     return next(new ErrorHandler("All fields are mandatory", 400));
 
-  const to = process.env.MY_MAIL;
-  const subject = "Contact from CourseBundler";
+  const to =  "enquiry@skillturtle.in";
+  const subject = "Contact from Skill Turtle Website";
   const text = `I am ${name} and my Email is ${email}. \n${message}`;
 
   await sendEmail(to, subject, text);

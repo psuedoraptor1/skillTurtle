@@ -21,7 +21,7 @@ justifyContent="center"
 spacing={'16'}
 >
 
-    <Heading children={"Welcome to Bright Bytes"} />
+    <Heading children={"Welcome to Skill Turtle"} />
     <form onSubmit={submitHandler} style={{ width: '100%' }}>
           <Box my={'4'}>
             <FormLabel htmlFor="email" children="Email Address" />
