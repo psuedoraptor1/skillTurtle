@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.14fbbd17.css",
+    "main.js": "/static/js/main.4eee3bf5.js",
+    "static/media/introd.mp4": "/static/media/introd.4be4a7d892e147c4cf53.mp4",
+    "static/media/darkintrod.mp4": "/static/media/darkintrod.db17e2cd387b3a11edae.mp4",
+    "static/media/final.png": "/static/media/final.43ebf3e1c563af91852b.png",
+    "static/media/SkillTurtleWithBG.jpg": "/static/media/SkillTurtleWithBG.01142195891c7982b68e.jpg",
+    "static/media/razor.png": "/static/media/razor.982640e714222fc1b510.png",
+    "index.html": "/index.html",
+    "main.14fbbd17.css.map": "/static/css/main.14fbbd17.css.map",
+    "main.4eee3bf5.js.map": "/static/js/main.4eee3bf5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.14fbbd17.css",
+    "static/js/main.4eee3bf5.js"
+  ]
+}
