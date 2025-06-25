@@ -13,7 +13,7 @@ const Footer = () => {
 <Heading
 fontFamily={'body'}
 size="sm"
-children="@Skill Turle" color={'yellow.400'}/>
+children="@Skill Turtle" color={'yellow.400'}/>
 
     </VStack>
 

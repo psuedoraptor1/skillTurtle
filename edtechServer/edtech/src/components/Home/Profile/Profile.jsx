@@ -87,11 +87,11 @@ const {isOpen,onClose,onOpen}=useDisclosure();
 
  </Link>
 
- <Link to="/changepassword">
+ {/* <Link to="/changepassword">
   <Button>
    Change Password
   </Button>
-</Link>
+</Link> */}
 </Stack>
 </VStack>
 </Stack>

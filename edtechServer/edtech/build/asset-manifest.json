@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/static/css/main.fabb3598.css",
-    "main.js": "/static/js/main.4159735f.js",
-    "static/media/introd.mp4": "/static/media/introd.4be4a7d892e147c4cf53.mp4",
-    "static/media/darkintrod.mp4": "/static/media/darkintrod.db17e2cd387b3a11edae.mp4",
+    "main.js": "/static/js/main.90f40d37.js",
+    "static/media/darkintrod.mp4": "/static/media/darkintrod.1da679bf2922e2a9b262.mp4",
+    "static/media/introd.mp4": "/static/media/introd.c91047bee5fa18b12bd0.mp4",
     "static/media/final.png": "/static/media/final.43ebf3e1c563af91852b.png",
-    "static/media/SkillTurtleWithBG.jpg": "/static/media/SkillTurtleWithBG.01142195891c7982b68e.jpg",
+    "static/media/SkillTurtleWithBG.png": "/static/media/SkillTurtleWithBG.804e738761c199290339.png",
     "static/media/razor.png": "/static/media/razor.982640e714222fc1b510.png",
     "index.html": "/index.html",
     "main.fabb3598.css.map": "/static/css/main.fabb3598.css.map",
-    "main.4159735f.js.map": "/static/js/main.4159735f.js.map"
+    "main.90f40d37.js.map": "/static/js/main.90f40d37.js.map"
   },
   "entrypoints": [
     "static/css/main.fabb3598.css",
-    "static/js/main.4159735f.js"
+    "static/js/main.90f40d37.js"
   ]
 }
