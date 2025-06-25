@@ -48,19 +48,19 @@ focusBorderColor="yellow.500"
 />
 </Box>
 
-<Box>
+{/* <Box>
     <Link to="/forgetpassword">
    <Button fontSize={'sm'} variant="link">
     Forget Password?
     </Button>     
     </Link>
-</Box>
+</Box> */}
 
 <Button my={'4'} colorScheme={"yellow"}
 type="submit">
     Login
 </Button>
-<Box my="4">
+{/* <Box my="4">
     New User?{' '} 
     <Link to="/register">
         <Button colorScheme={'yellow'} variant="link">
@@ -69,7 +69,7 @@ type="submit">
       
     </Link>
 
-</Box>
+</Box> */}
 
 
 </form>

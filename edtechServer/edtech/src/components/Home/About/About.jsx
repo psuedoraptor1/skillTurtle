@@ -4,7 +4,7 @@ import introVideo from '../../../assets/videos/introd.mp4';
 import { useColorModeValue } from '@chakra-ui/react';
 import termsAndCondition from '../../../assets/docs/termsAndCondition';
 import introVideoDark from '../../../assets/videos/darkintrod.mp4';
-import SkillTurtleWithBG from '../../../assets/images/SkillTurtleWithBG.jpg'
+import SkillTurtleWithBG from '../../../assets/images/SkillTurtleWithBG.png'
 //INTRO VIDEO HERE
 
 const Founder=()=>(

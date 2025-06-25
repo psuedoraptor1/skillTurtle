@@ -70,7 +70,7 @@ function App() {
             <Header isAuthenticated={isAuthenticated} user={user} />
             <Routes>
               <Route path="/" element={<Home user={user} />} />
-              <Route path="/courses" element={<Courses user={user}/>} />
+              <Route path="/courses" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Courses user={user} /></ProtectedRoute>} />
               <Route path="/profile" element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Profile user={user} />
